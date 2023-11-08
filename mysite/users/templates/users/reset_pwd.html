@@ -1,23 +1,24 @@
 {% extends 'users/base.html' %}
 
+
+
 {% block head %}
-    <title>Login Page</title>
+    <title>Change password page</title>
 {% endblock head %}
 
 {% block container %}
     <div class="box">
             <h1 class="is-uppercase has-text-centered has-text-weight-bold ">Asukaki Personal blog
-                <br><span class="tag">登录</span>
+                <br><span class="tag">Change password</span>
             </h1>
             <hr class="dropdown-divider">
             <form action="" method="post">
 
             {% csrf_token %}
             {{ form.as_p }}
-            {{ form.errors }}
-            <a class="is-pulled-left is-size-7 " href="{% url 'users:forget_pwd'%}">forget password?</a>
-            <div class="is-clearfix"></div>
-            <input type="submit" style="margin-top: 1em" class ="button is-link " value="log in" >
+
+
+            <input type="submit" style="margin-top: 1em" class ="button is-link " value="Change" >
         </form>
     </div>
 {% endblock container %}

@@ -1,0 +1,24 @@
+{% extends 'users/base.html' %}
+
+
+
+{% block head %}
+    <title>rigster Page</title>
+{% endblock head %}
+
+{% block container %}
+<body>
+<div class="box">
+    <h1 class="is-uppercase has-text-centered has-text-weight-bold ">Asukaki Personal blog
+        <br><span class="tag">注册</span>
+    </h1>
+    <hr class="dropdown-divider">
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" style="margin-top: 1em" class="button is-link " value="sign up">
+    </form>
+</div>
+
+</body>
+{% endblock container %}
