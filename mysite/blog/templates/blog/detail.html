@@ -1,0 +1,36 @@
+{% extends 'blog/base.html' %}
+
+{% block section%}
+<div class="box">
+    <h1 class="title is-size-5">{{ post.title }}</h1>
+    <div class="is-size-7 has-text-grey pt-1 pb-1">
+        <span class="mr-6">auth:{{ post.owner }}</span>
+        <span>Publish Date:{{ post.add_date }}</span>
+    </div>
+    <div class="content">
+        {{ post.content|safe }}
+    </div>
+</div>
+
+<div class="level">
+    <div class="level-left">
+        {% if prev_post %}
+        <span>上一篇：</span><a href="{% url 'blog:post_detail' prev_post.id %}" class="level-item">{{ prev_post.title }}</a>
+        {% else %}
+        <span class="has-text-danger-dark ">前边的区域以后再来探险吧！</span>
+        {% endif %}
+
+    </div>
+    <div class="level-right">
+        {% if next_post %}
+        <span>下一篇：</span><a href="{% url 'blog:post_detail' next_post.id %}" class="level-item">{{ next_post.title }}</a>
+        {% else %}
+        <span class="has-text-danger-dark ">之后的区域也以后再来探险吧！</span>
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+{% endblock %}

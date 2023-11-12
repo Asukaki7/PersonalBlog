@@ -24,6 +24,7 @@ from django.conf.urls.static import static
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('users/', include('users.urls')),  # 使用include 引入users.url 决定的是8000/admin或者users
+                  path('', include('blog.urls'))
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)  # 配置静态文件url
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,12 +1,13 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, HttpResponse, redirect
-from django.contrib.auth import authenticate, login
-from .forms import LoginForm, RegisterForm, ForgetPwdForm, ModifyPwdForm
+from django.contrib.auth import authenticate, login, logout
+from .forms import LoginForm, RegisterForm, ForgetPwdForm, ModifyPwdForm, UserFormProfile, UserForm
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
-from .models import EmailVerifyRecord
+from .models import EmailVerifyRecord, UserProfile
 from utils.email_send import send_register_email
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -33,7 +34,8 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('/admin')
+                # 登录成功之后跳转到个人中心
+                return redirect('users:user_profile')
             else:
                 return HttpResponse('Log in failed')
     return render(request, 'users/login.html', {'form': form})
@@ -73,6 +75,7 @@ def active_user(request, active_code):
 
 
 def forget_pwd(request):
+    """忘记密码"""
     if request.method == 'GET':
         form = ForgetPwdForm()
     if request.method == 'POST':
@@ -90,6 +93,7 @@ def forget_pwd(request):
 
 
 def forget_pwd_url(request, active_code):
+    """reset 密码"""
     if request.method != 'POST':
         form = ModifyPwdForm()
     else:
@@ -106,3 +110,57 @@ def forget_pwd_url(request, active_code):
             return HttpResponse('change failed')
 
     return render(request, 'users/reset_pwd.html', {'form': form})
+
+
+@login_required(login_url='users:login')
+def user_profile(request):
+    """个人中心"""
+    user = User.objects.get(username=request.user)
+    return render(request, 'users/user_profile.html', {'user': user})
+
+
+def logout_view(request):
+    """登出视图"""
+    logout(request)
+    return redirect('users:login')
+
+
+@login_required(login_url='users:login')
+def editor_users(request):
+    """编辑用户信息"""
+    # 逻辑在这里
+    user = User.objects.get(id=request.user.id)
+
+    if request.method == "POST":
+        try:
+            # userprofile和user之间是一对一，默认注册是没有数据的，注册成功之后他才会在个人中心设置信息
+            user_profile = user.userprofile
+            form = UserForm(request.POST, instance=user)  # 保存加修改,instance默认显示他原有的数据
+            user_profile_form = UserFormProfile(request.POST, request.FILES, instance=user_profile)
+            if form.is_valid() and user_profile_form.is_valid():
+                form.save()
+                user_profile_form.save()
+                return redirect("users:user_profile")
+
+        except UserProfile.DoesNotExist:
+            form = UserForm(request.POST, instance=user)
+            user_profile_form = UserFormProfile(request.POST, request.FILES)
+            if form.is_valid() and user_profile_form.is_valid():
+                form.save()
+                new_uer_profile = user_profile_form.save(commit=False)
+                new_uer_profile.owner = request.user
+                new_uer_profile.save()
+
+                return redirect("users:user_profile")
+
+    else:
+        try:
+            user_profile = user.userprofile
+            form = UserForm(instance=user)  # 保存加修改,instance默认显示他原有的数据
+            user_profile_form = UserFormProfile(instance=user_profile)
+
+        except UserProfile.DoesNotExist:
+            form = UserForm(instance=user)
+            user_profile_form = UserFormProfile()
+
+    return render(request, 'users/editor_users.html',locals())

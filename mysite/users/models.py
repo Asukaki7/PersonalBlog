@@ -12,6 +12,8 @@ class UserProfile(models.Model):
     )
     owner = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='用户')
     nike_name = models.CharField('昵称', max_length=23, blank=True, default='')
+    desc = models.TextField('Profile', max_length=200, blank=True, default='')
+    gexing = models.CharField('个性签名', max_length=100, blank=True, default='')
     birthday = models.DateField('生日', null=True, blank=True)
     gender = models.CharField('性别', max_length=6, choices=USER_GENDER_TYPE, default='female')
     address = models.CharField('地址', max_length=100, blank=True, default='')
@@ -45,3 +47,5 @@ class EmailVerifyRecord(models.Model):
 
     def __str__(self):
         return self.code
+
+
