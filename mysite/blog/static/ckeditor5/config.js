@@ -18,13 +18,11 @@ $(document).ready(function () {
                     'bulletedList',
                     'numberedList',
                     '|',
-                    'indent',
-                    'outdent',
-                    '|',
                     'link',
                     'imageUpload',
                     'imageInsert',
                     'mediaEmbed',
+                    'ckfinder',
                     '|',
                     'blockQuote',
                     'strikethrough',
@@ -33,7 +31,6 @@ $(document).ready(function () {
                     'subscript',
                     'insertTable',
                     'undo',
-                    'redo',
                     'alignment'
                 ],
                 shouldNotGroupWhenFull: true
@@ -1038,6 +1035,7 @@ $(document).ready(function () {
                 ]
             },
             //表格配置
+
             table: {
                 contentToolbar: [
                     'tableColumn',
@@ -1049,7 +1047,7 @@ $(document).ready(function () {
             licenseKey: '',
             //图片上传
             ckfinder: {
-                uploadUrl: 'http://192.168.31.123:2000/api/Home/UploadImg'
+                uploadUrl: '/upload/'
             },
             //自定义providers,给上传的视频链接设置相应的html，让其可以正常在富文本编辑器中显示
             mediaEmbed: {
