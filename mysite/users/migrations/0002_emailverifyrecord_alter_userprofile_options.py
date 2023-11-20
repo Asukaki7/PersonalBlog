@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('users', '0001_initial'),
     ]
@@ -16,7 +15,8 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('code', models.CharField(max_length=20, verbose_name='verify code')),
                 ('email', models.EmailField(max_length=50, verbose_name='email')),
-                ('send_type', models.CharField(choices=[('register', '注册'), ('forget', '找回密码')], default='register', max_length=10)),
+                ('send_type',
+                 models.CharField(choices=[('register', '注册'), ('forget', '找回密码')], default='register', max_length=10)),
                 ('send_time', models.DateTimeField(auto_now_add=True, verbose_name='time')),
             ],
             options={

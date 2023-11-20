@@ -44,8 +44,8 @@ class Post(models.Model):
     content = models.TextField(verbose_name="文章详情")
     tags = models.ForeignKey(Tag, blank=True, null=True, on_delete=models.CASCADE, verbose_name="文章标签")
     owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="作者")
-    is_hot = models.BooleanField(default=False, verbose_name="是否热门") #手动热门
-    Browse_rate = models.IntegerField(default=0, verbose_name="流量率") #浏览量
+    is_hot = models.BooleanField(default=False, verbose_name="是否热门")  # 手动热门
+    Browse_rate = models.IntegerField(default=0, verbose_name="流量率")  # 浏览量
     add_date = models.DateTimeField(auto_now_add=True, verbose_name="添加时间")
     pub_date = models.DateTimeField(auto_now=True, verbose_name="修改时间")
 
@@ -92,7 +92,7 @@ class Sidebar(models.Model):
     def get_sidebar(cls):
         return cls.objects.filter(status=2)  # 查询到所有允许展示的模块
 
-    @property #成为一个类属性，使用时候不需要后边括号，readonly
+    @property  # 成为一个类属性，使用时候不需要后边括号，readonly
     def get_content(self):
         if self.display_type == 1:
             context = {
@@ -114,7 +114,7 @@ class Sidebar(models.Model):
 
             }
             return render_to_string('blog/sidebar/comment.html', context=context)
-        elif self.display_type == 5: #文章归档
+        elif self.display_type == 5:  # 文章归档
             context = {
 
             }

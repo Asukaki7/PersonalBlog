@@ -163,4 +163,4 @@ def editor_users(request):
             form = UserForm(instance=user)
             user_profile_form = UserFormProfile()
 
-    return render(request, 'users/editor_users.html',locals())
+    return render(request, 'users/editor_users.html', locals())
